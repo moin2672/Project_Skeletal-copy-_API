@@ -31,7 +31,7 @@ app.post('/api/posts',(req, res, next) =>{
     res.status(201).json({message:"Post added successfully!"});
 })
 
-app.use('/api/posts',(req, res, next)=>{
+app.get('/api/posts',(req, res, next)=>{
     Post.find()
         .then(documents=>{
             res.status(200).json({
@@ -41,6 +41,11 @@ app.use('/api/posts',(req, res, next)=>{
         })
         .catch(()=>{console.log("Unable to get documents")});
     
+});
+
+app.delete('/api/posts/:id',(req, res, next)=>{
+    console.log(req.params.id);
+    res.status(200).json({message:"Post Deleted!"})
 });
 
 module.exports = app;
