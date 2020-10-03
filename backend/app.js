@@ -1,9 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const mogoose = require("mongoose");
 
 const Post = require('./models/post');
 
 const app = express();
+
+mogoose.connect("mongodb+srv://meanapp:AEKzArBnCBP1ehTH@cluster0.fgaaw.mongodb.net/meanapp", { useNewUrlParser: true, useUnifiedTopology: true })
+        .then(()=>{console.log("Connected to Database")})
+        .catch(()=>{console.log("Db connection failed!")});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
@@ -21,7 +26,8 @@ app.post('/api/posts',(req, res, next) =>{
         title: req.body.title,
         content: req.body.content
     });
-    console.log(post);
+    // console.log(post);
+    post.save();
     res.status(201).json({message:"Post added successfully!"});
 })
 
