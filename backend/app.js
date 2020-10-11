@@ -4,10 +4,11 @@ const bodyParser = require('body-parser');
 const mogoose = require("mongoose");
 
 const postRoutes = require("./routes/posts");
+const userRoutes = require("./routes/users");
 
 const app = express();
 
-mogoose.connect("mongodb+srv://meanapp:AEKzArBnCBP1ehTH@cluster0.fgaaw.mongodb.net/meanapp", { useNewUrlParser: true, useUnifiedTopology: true })
+mogoose.connect("mongodb+srv://meanapp:AEKzArBnCBP1ehTH@cluster0.fgaaw.mongodb.net/meanapp", { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex:true })
         .then(()=>{console.log("Connected to Database")})
         .catch(()=>{console.log("Db connection failed!")});
 
@@ -24,5 +25,6 @@ app.use((req, res, next)=>{
 });
 
 app.use("/api/posts",postRoutes);
+app.use("/api/users",userRoutes);
 
 module.exports = app;
