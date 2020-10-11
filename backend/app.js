@@ -27,4 +27,5 @@ app.use((req, res, next)=>{
 app.use("/api/posts",postRoutes);
 app.use("/api/users",userRoutes);
 
+
 module.exports = app;
