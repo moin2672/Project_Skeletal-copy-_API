@@ -66,11 +66,16 @@ router.put("/:id",checkAuth,multer({storage:storage}).single("image"),(req, res,
         imagePath:imagePath
     })
     console.log(post)
-    Post.updateOne({_id:req.params.id}, post)
+    Post.updateOne({_id:req.params.id, creator: req.userData.userId}, post)
         .then(result=>{
             console.log(result)
-            res.status(200).json({message:"Post updated successfully!"});
+            if(result.nModified>0){
+                res.status(200).json({message:"Post updated successfully!"});
+            }else{
+                res.status(401).json({message:"Not Authorized"})
+            }
         })
+
         .catch(()=>{
             console.log("Post not updated")
         })
@@ -117,10 +122,14 @@ router.get('/:id',(req, res, next)=>{
 });
 
 router.delete('/:id',checkAuth,(req, res, next)=>{
-    Post.deleteOne({_id:req.params.id})
+    Post.deleteOne({_id:req.params.id, creator: req.userData.userId})
         .then(result=>{
             console.log(result);
-            res.status(200).json({message:"Post Deleted!"})
+            if(result.n>0){
+                res.status(200).json({message:"Post Deleted successfully!"});
+            }else{
+                res.status(401).json({message:"Not Authorized"})
+            }
         })
         .catch(()=>{
             console.log("Post is not deleted")
